@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button mLoadImageButton;
 
     private Context context = MainActivity.this;
+    private Bitmap bmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +67,18 @@ public class MainActivity extends AppCompatActivity {
             {
                 case RESULT_LOAD_IMAGE:
                     Uri selectedImage = data.getData();
+
+                    // Create byte
+                    byte[] byteArray =  data.getByteArrayExtra("Image");
+                    bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
                     //imageView1.setImageURI(selectedImage);
                     Glide.with(context).load(selectedImage).into(imageView1);
                     break;
             }
         }
+
+
 
     }
 
