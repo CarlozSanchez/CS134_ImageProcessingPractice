@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -68,17 +70,45 @@ public class MainActivity extends AppCompatActivity {
                 case RESULT_LOAD_IMAGE:
                     Uri selectedImage = data.getData();
 
-                    // Create byte
-                    byte[] byteArray =  data.getByteArrayExtra("Image");
-                    bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
                     //imageView1.setImageURI(selectedImage);
                     Glide.with(context).load(selectedImage).into(imageView1);
                     break;
             }
         }
+    }
 
+    public void desaturate(View view)
+    {
+        bmp = ((BitmapDrawable)imageView1.getDrawable()).getBitmap();
+        Log.i("desaturate", bmp.toString());
 
+        Bitmap desaturatedBmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+
+        double red = 0.33;
+        double green = 0.59;
+        double blue = 0.11;
+
+        int factor = 50;
+
+        for (int i = 0; i < bmp.getWidth(); i++) {
+            for (int j = 0; j < bmp.getHeight(); j++) {
+
+                int pixel = bmp.getPixel(i,j);
+                int r = Color.red(pixel);
+                int g = Color.green(pixel);
+                int b = Color.blue(pixel);
+
+                int value = (r + g + b) / 3;
+
+                r = g = b = value;
+                
+                desaturatedBmp.setPixel(i,j, Color.argb(Color.alpha(pixel), r, g, b));
+            }
+            
+        }
+
+        //Glide.with(context).load(desaturatedBmp).into(imageView2);
+        imageView2.setImageBitmap(desaturatedBmp);
 
     }
 
@@ -130,4 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
             imageView1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
+
+
+
+        // creating bytemap
+                            // Create byte
+                    byte[] byteArray =  data.getByteArrayExtra("Image");
+                    bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
  */
