@@ -63,12 +63,12 @@
     </ScrollView>
 
 
-
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loadImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:onClick="onClick"
         android:text="Load Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
